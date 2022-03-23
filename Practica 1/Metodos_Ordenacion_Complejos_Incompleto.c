@@ -19,7 +19,7 @@
 #define N 2 << 10
 #endif
 
-#define IMPRIMIR (N < 20)
+#define IMPRIMIR (N < 200)
 
 /*******************************************************/
 /*  DECLARACION DE TIPOS                               */
@@ -87,7 +87,7 @@ int main()
 	Complejo_T a, b;
 	srand(time(NULL));
 
-	// inicializa un complejo random
+	// inicializamos dos complejo random
 	inicializar_complejo(&a);
 	inicializar_complejo(&b);
 
@@ -97,7 +97,7 @@ int main()
 	printf("(%d, %di) complejo B ", b.real, b.imag);
 	printf("\n");
 
-	// vemos si el complejo a es mayor o menor que b
+	// vemos si el complejo A es mayor o menor que el complejo B
 	if (esMenor(a, b) == 1)
 		printf("el modulo del complejo A es menor que B");
 	else
@@ -110,51 +110,56 @@ int main()
 	inicializar_datos(vec1, N);
 	printf("arreglo original\n");
 	// si el arreglo es pequenio se imprimen sus valores
-	if (IMPRIMIR)
+	if (IMPRIMIR){
+
 		imprimir_arreglo(vec1, N);
 
-	printf("\n");
-	printf("\n");
+		printf("\n");
+		printf("\n");
 
-	struct timeval begin, end;
-	// empezamos a medir el tiempo
-	gettimeofday(&begin, 0);
+		struct timeval begin, end;
+		// empezamos a medir el tiempo que tarda cada algoritmo de busqueda
+		gettimeofday(&begin, 0);
 
-	// orden_Burbuja(vec1, N);
-	// orden_insercion(vec1, N);
-	// orden_seleccion(vec1, N);
-	orden_shellsort(vec1, N);
-	// int primero = 0;
-	// int ultimo = N - 1;
-	// orden_quicksort(vec1, primero, ultimo);
+		// orden_Burbuja(vec1, N);
+		// orden_insercion(vec1, N);
+		// orden_seleccion(vec1, N);
+		orden_shellsort(vec1, N);
 
-	gettimeofday(&end, 0);
+		// int primero = 0;
+		// int ultimo = N - 1;
+		// orden_quicksort(vec1, primero, ultimo); 
 
-	long seconds = end.tv_sec - begin.tv_sec;
-	long microseconds = end.tv_usec - begin.tv_usec;
-	double tiempo = seconds + microseconds * 1e-6;
+		gettimeofday(&end, 0);
 
-	printf("metodo de ordenamiento\n");
-	if (IMPRIMIR)
+		long seconds = end.tv_sec - begin.tv_sec;
+		long microseconds = end.tv_usec - begin.tv_usec;
+		double tiempo = seconds + microseconds * 1e-6;
+
+		printf("metodo de ordenamiento\n");
 		imprimir_arreglo(vec1, N);
-	printf("\n");
-	printf("Time measured: %.8f seconds.\n", tiempo);
+		printf("\n");
+		printf("Tiempo medido: %.8f seconds.\n", tiempo);
 
-	printf("\n");
-	printf("\n");
+		printf("\n");
+		printf("\n");
 
-	printf("ingrese numero complejo a buscar:\n");
-	scanf("%d", &i.real);
-	scanf("%d", &i.imag);
+		printf("ingrese parte real del numero complejo a buscar: ");
+		scanf("%d", &i.real);
+		printf("ingrese parte imaginaria del numero complejo a buscar: ");
+		scanf("%d", &i.imag);
 
-	// if (busqueda_secuencial(vec1, i, N) == 1)
-	// 	printf("el complejo A existe");
-	// else
-	// 	printf("No existe ");
-	if (busqueda_secuencial(vec1, i, N) != 0)
-		printf("el complejo A existe");
+		// if (busqueda_secuencial(vec1, i, N) == 1)
+		// 	printf("el complejo ingresado existe");
+		// else
+		// 	printf("No existe ");
+		if (busqueda_binaria(vec1, i, N) != 0)
+			printf("el complejo ingresado existe");
+		else
+			printf("No existe ");
+	}
 	else
-		printf("No existe ");
+		printf("el numero igresado esta fuera de rango \n");
 
 	return 0;
 }
@@ -352,8 +357,6 @@ int busqueda_binaria(Complejo_T vector[N], Complejo_T x, int size)
 	while (bajo <= alto)
 	{
 		central = (bajo + alto) / 2;
-		// // valorCentral.real = vector[central].real;
-		// // valorCentral.imag = vector[central].imag;
 		valorCentral = vector[central];
 
 		if(iguales(&x, &valorCentral) == 1)
