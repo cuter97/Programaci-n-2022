@@ -19,7 +19,7 @@
 #define N 2 << 10
 #endif
 
-#define IMPRIMIR (N < 200)
+#define IMPRIMIR (N < 20)
 
 /*******************************************************/
 /*  DECLARACION DE TIPOS                               */
@@ -66,100 +66,75 @@ void orden_quicksort(Complejo_T vector[N], int primero, int ultimo);
 int busqueda_secuencial(Complejo_T vector[N], Complejo_T x, int size);
 
 /* funcion que retorna 1 si los complejos son iguales y 0 caso contrario*/
-int iguales(Complejo_T *a, Complejo_T *b);
+int iguales(Complejo_T a, Complejo_T b);
 
 /*busqueda binaria*/
 int busqueda_binaria(Complejo_T vector[N], Complejo_T x, int size);
 
-/*Inicializa un numero complejo con valores randoms entre 0 y 9*/
-int inicializar_complejo(Complejo_T *n);
-
 /*funcion que calcula el modulo de un complejo y lo retorna*/
-int modulo_calc(Complejo_T n);
+float modulo_calc(Complejo_T n);
 
 /*******************************************************/
 /*  FUNCION MAIN                                       */
 /*******************************************************/
 int main()
 {
-
 	Complejo_T vec1[N], i;
-	Complejo_T a, b;
 	srand(time(NULL));
-
-	// inicializamos dos complejo random
-	inicializar_complejo(&a);
-	inicializar_complejo(&b);
-
-	// imprimimos los valores
-	printf("(%d, %di) complejo A ", a.real, a.imag);
-	printf("\n");
-	printf("(%d, %di) complejo B ", b.real, b.imag);
-	printf("\n");
-
-	// vemos si el complejo A es mayor o menor que el complejo B
-	if (esMenor(a, b) == 1)
-		printf("el modulo del complejo A es menor que B");
-	else
-		printf("el modulo del complejo A es mayor que B");
-
-	printf("\n");
-	printf("\n");
 
 	// incializacion de datos del vector
 	inicializar_datos(vec1, N);
-	printf("arreglo original\n");
 	// si el arreglo es pequenio se imprimen sus valores
 	if (IMPRIMIR){
-
+		printf("arreglo original\n");
 		imprimir_arreglo(vec1, N);
+	}
 
-		printf("\n");
-		printf("\n");
+	printf("\n");
+	printf("\n");
 
-		struct timeval begin, end;
-		// empezamos a medir el tiempo que tarda cada algoritmo de busqueda
-		gettimeofday(&begin, 0);
+	struct timeval begin, end;
+	// empezamos a medir el tiempo que tarda cada algoritmo de busqueda
+	gettimeofday(&begin, 0);
 
-		// orden_Burbuja(vec1, N);
-		// orden_insercion(vec1, N);
-		// orden_seleccion(vec1, N);
-		orden_shellsort(vec1, N);
+	// orden_Burbuja(vec1, N);
+	// orden_insercion(vec1, N);
+	// orden_seleccion(vec1, N);
+	orden_shellsort(vec1, N);
 
-		// int primero = 0;
-		// int ultimo = N - 1;
-		// orden_quicksort(vec1, primero, ultimo); 
+	// int primero = 0;
+	// int ultimo = N - 1;
+	// orden_quicksort(vec1, primero, ultimo); 
 
-		gettimeofday(&end, 0);
+	gettimeofday(&end, 0);
 
-		long seconds = end.tv_sec - begin.tv_sec;
-		long microseconds = end.tv_usec - begin.tv_usec;
-		double tiempo = seconds + microseconds * 1e-6;
+	long seconds = end.tv_sec - begin.tv_sec;
+	long microseconds = end.tv_usec - begin.tv_usec;
+	double tiempo = seconds + microseconds * 1e-6;
 
+	if (IMPRIMIR){
 		printf("metodo de ordenamiento\n");
 		imprimir_arreglo(vec1, N);
-		printf("\n");
-		printf("Tiempo medido: %.8f seconds.\n", tiempo);
-
-		printf("\n");
-		printf("\n");
-
-		printf("ingrese parte real del numero complejo a buscar: ");
-		scanf("%d", &i.real);
-		printf("ingrese parte imaginaria del numero complejo a buscar: ");
-		scanf("%d", &i.imag);
-
-		// if (busqueda_secuencial(vec1, i, N) == 1)
-		// 	printf("el complejo ingresado existe");
-		// else
-		// 	printf("No existe ");
-		if (busqueda_binaria(vec1, i, N) != 0)
-			printf("el complejo ingresado existe");
-		else
-			printf("No existe ");
 	}
+	printf("\n");
+	printf("Tiempo medido: %.8f seconds.\n", tiempo);
+
+	printf("\n");
+	printf("\n");
+
+	printf("ingrese parte real del numero complejo a buscar: ");
+	scanf("%d", &i.real);
+	printf("ingrese parte imaginaria del numero complejo a buscar: ");
+	scanf("%d", &i.imag);
+
+	if (busqueda_secuencial(vec1, i, N) == 1)
+		printf("el complejo ingresado existe");
 	else
-		printf("el numero igresado esta fuera de rango \n");
+		printf("No existe ");
+	// if (busqueda_binaria(vec1, i, N) != 0)
+	// 	printf("el complejo ingresado existe");
+	// else
+	// 	printf("No existe ");
 
 	return 0;
 }
@@ -167,14 +142,6 @@ int main()
 /*******************************************************/
 /*  IMPLEMENTACION DE FUNCIONES                        */
 /*******************************************************/
-
-/*Inicializa un numero complejo con valores randoms entre 0 y 9*/
-int inicializar_complejo(Complejo_T *n)
-{
-	n->real = rand() % 10;
-	n->imag = rand() % 10;
-	return 0;
-}
 
 /*Inicializa parte real e imaginaria con valores random */
 int inicializar_datos(Complejo_T vec[N], int size)
@@ -203,24 +170,19 @@ int esMenor(Complejo_T a, Complejo_T b)
 }
 
 /*funcion que calcula el modulo de un complejo y lo retorna*/
-int modulo_calc(Complejo_T n)
+float modulo_calc(Complejo_T n)
 {
-	return (sqrt(pow(n.real, 2) + pow(n.imag, 2)));
+	return ((float)sqrt(pow(n.real, 2) + pow(n.imag, 2)));
 }
 
 /* intercambia los valores de x y de y*/
 int swap(Complejo_T *x, Complejo_T *y)
 {
-	int aux1, aux2;
-
-	aux1 = x->real;
-	x->real = y->real;
-	y->real = aux1;
-
-	aux2 = x->imag;
-	x->imag = y->imag;
-	y->imag = aux2;
-
+	Complejo_T aux;
+	aux = *x;
+	*x = *y;
+	*y = aux;
+	
 	return 0;
 }
 
@@ -231,11 +193,8 @@ int orden_Burbuja(Complejo_T vector[N], int size)
 	{
 		for (int j = i + 1; j < size; j++)
 		{
-			float x = sqrt(pow(vector[i].real, 2) + pow(vector[i].imag, 2));
-			float y = sqrt(pow(vector[j].real, 2) + pow(vector[j].imag, 2));
-
-			if (y < x)
-				swap(&vector[i], &vector[j]);
+			if (modulo_calc(vector[j]) < modulo_calc(vector[i]))
+				swap(&vector[i], &vector[j]);	
 		}
 	}
 	return 0;
@@ -246,19 +205,15 @@ int orden_insercion(Complejo_T vector[N], int size)
 {
 	for (int i = 0; i < size; i++)
 	{
-		Complejo_T aux;
-		aux.real = vector[i].real;
-		aux.imag = vector[i].imag;
+		Complejo_T aux = vector[i];
 
 		int j = i - 1;
-		while ((j >= 0) && (sqrt(pow(vector[j].real, 2) + pow(vector[j].imag, 2)) > sqrt(pow(aux.real, 2) + pow(aux.imag, 2))))
+		while ((j >= 0) && (modulo_calc(vector[j]) > modulo_calc(aux)))
 		{
-			vector[j + 1].real = vector[j].real;
-			vector[j + 1].imag = vector[j].imag;
+			vector[j + 1] = vector[j];
 			j--;
 		}
-		vector[j + 1].real = aux.real;
-		vector[j + 1].imag = aux.imag;
+		vector[j + 1] = aux;
 	}
 	return 0;
 }
@@ -272,7 +227,7 @@ int orden_seleccion(Complejo_T vector[N], int size)
 		int p = i;
 		for (int j = i + 1; j <= limite; j++)
 		{
-			if (sqrt(pow(vector[j].real, 2) + pow(vector[j].imag, 2)) < sqrt(pow(vector[p].real, 2) + pow(vector[p].imag, 2)))
+			if (modulo_calc(vector[j]) < modulo_calc(vector[p]))
 				p = j;
 		}
 		if (p != i)
@@ -289,7 +244,7 @@ int orden_shellsort(Complejo_T vector[N], int size)
 	{
 		for (int i = incr; i < size; i++)
 		{
-			for (int j = i; (j >= incr) && (sqrt(pow(vector[j - incr].real, 2) + pow(vector[j - incr].imag, 2)) > sqrt(pow(vector[j].real, 2) + pow(vector[j].imag, 2))); j -= incr)
+			for (int j = i; (j >= incr) && (modulo_calc(vector[j - incr]) > modulo_calc(vector[j])); j -= incr)
 			{
 				swap(&vector[j], &vector[j - incr]);
 			}
@@ -311,9 +266,9 @@ void orden_quicksort(Complejo_T vector[N], int primero, int ultimo)
 	int j = ultimo;
 	do
 	{
-		while (sqrt(pow(vector[i].real, 2) + pow(vector[i].imag, 2)) < sqrt(pow(pivote.real, 2) + pow(pivote.imag, 2)))
+		while (modulo_calc(vector[i]) < modulo_calc(pivote))
 			i++;
-		while (sqrt(pow(vector[j].real, 2) + pow(vector[j].imag, 2)) > sqrt(pow(pivote.real, 2) + pow(pivote.imag, 2)))
+		while (modulo_calc(vector[j]) > modulo_calc(pivote))
 			j--;
 		if (i <= j)
 		{
@@ -333,18 +288,23 @@ void orden_quicksort(Complejo_T vector[N], int primero, int ultimo)
 int busqueda_secuencial(Complejo_T vector[N], Complejo_T x, int size)
 {
 	int i = 0;
-	while (iguales(&vector[i], &x) == 0 && (i < size))
-		i++;
-	if (iguales(&vector[i], &x) == 1)
-		return 1;
-	else
-		return 0;
+	int resultado = 0;
+	do
+	{
+		if (iguales(vector[i], x) == 1)
+			resultado = 1;
+		else
+			i++;
+
+	}while (!resultado && (i < size));
+
+	return resultado;
 }
 
 /* funcion que retorna 1 si los complejos son iguales y 0 caso contrario*/
-int iguales(Complejo_T *a, Complejo_T *b)
+int iguales(Complejo_T a, Complejo_T b)
 {
-	return ((a->real == b->real && a->imag == b->imag) ? 1 : 0);
+	return ((a.real == b.real && a.imag == b.imag) ? 1 : 0);
 }
 
 /*busqueda binaria*/
@@ -359,7 +319,7 @@ int busqueda_binaria(Complejo_T vector[N], Complejo_T x, int size)
 		central = (bajo + alto) / 2;
 		valorCentral = vector[central];
 
-		if(iguales(&x, &valorCentral) == 1)
+		if(iguales(x, valorCentral) == 1)
 			return 1;
 		else if(esMenor(x, valorCentral) == 1)
 			alto = central - 1;
