@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef int TipoDato;
+typedef char TipoDato;
 #define TamMax 5
 
 typedef struct

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 typedef int TipoDato;
 
 struct Nodo
